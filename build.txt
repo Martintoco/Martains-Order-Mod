@@ -1,0 +1,4 @@
+displayName = Last Hero's Mod (Martain's Order)
+author = MartinToco
+version = 0.1.6.1
+homepage = https://forums.terraria.org/index.php?threads/martains-order-mod.99634/

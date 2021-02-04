@@ -1,0 +1,21 @@
+Last Hero's Mod Beta (Martain's Order | Exploration Update) snapshot 013121
+
+- This mod is slowly being translated to Spanish too! - Este mod esta siendo lentamente traducido a Español! -
+
+This mod is for expanding the Terraria experience even behond! Adding multiple items and weaponry for further customization and strategy, more NPCs to trade with, 6 bosses and some equipment for gameplay after Moonlord, furniture, a hard mode extension for the thrower class, and yet more to come!
+
+Important Additions: New boss ais, Void Biome, Zenith weapons, some SpanishTranslation, Whip accs and Thrower accs
+Fixes: Torch duplication, large world generation, multiplayer compability
+Bugs: Chest auto use disabled.
+
+Special thanks to my Dev team:
+- Septimus (Spriter & Musician)
+- Woodio (Coder)
+
+And my discord supporters:
+- Freygarr
+- Jax
+- Ammy (Friend irl)
+- Lettuce (Retired dev)
+
+- You can learn more, recieve news from this mod and check out changelogs on my Discord server, link in the forum page below! - Más información, noticias y registro de cambios en mi server de Discord, link en la pagína aquí! -
