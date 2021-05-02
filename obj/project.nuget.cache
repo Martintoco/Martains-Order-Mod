@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "nTqzLzNgZh2YI7KwRAPRThQ44zNrFmukwl5/PXbXfIEEPpdWxq8VO1afAjv1J3LqxfZyUpr34zVWLjasV8j+4w==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\marti\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\MartainsOrder\\MartainsOrder.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\marti\\.nuget\\packages\\tmodloader.codeassist\\0.1.1\\tmodloader.codeassist.0.1.1.nupkg.sha512"
+  ],
+  "logs": []
+}
