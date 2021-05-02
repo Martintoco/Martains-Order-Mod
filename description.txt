@@ -1,21 +1,41 @@
-Last Hero's Mod Beta (Martain's Order | Exploration Update) snapshot 013121
+Last Hero's Mod Beta (Martain's Order | Void Barren Update) snapshot 042721
+- This mod will be translated to Spanish too! - Este mod será traducido a Español! -
 
-- This mod is slowly being translated to Spanish too! - Este mod esta siendo lentamente traducido a Español! -
+This mod is for expanding the Terraria experience even behond. Adding multiple items and weaponry for further customization and strategy, more NPCs to trade with, 6 bosses and some equipment for gameplay after Moonlord, furniture, a extension for the thrower class, new mechanics, and yet more to come!
 
-This mod is for expanding the Terraria experience even behond! Adding multiple items and weaponry for further customization and strategy, more NPCs to trade with, 6 bosses and some equipment for gameplay after Moonlord, furniture, a hard mode extension for the thrower class, and yet more to come!
+Important Additions: Void barren Biome, Zenith weapons, a LOT of Accesories, all Research gear, more Gems, throwing rush mechanic and meter, biome extracts mechanic, Deep woods biome, forest's spirits event & Zenith tier weapons.
 
-Important Additions: New boss ais, Void Biome, Zenith weapons, some SpanishTranslation, Whip accs and Thrower accs
-Fixes: Torch duplication, large world generation, multiplayer compability
-Bugs: Chest auto use disabled.
+Fixes: rearanged player data, various multiplayer interactions, teleporting and jumping off certain caps now work properly on reversed gravity, balancing.
+Bugs: Torches no longer duplicate underwater, but instead change between droping and not droping while underwater.
 
-Special thanks to my Dev team:
+-Throwing Rush Mechanic-
+Activated with a a key selected on controls, when holding a throwing weapon a small meter will appear and start to fill, pressing the selected key when it's full will activate the rush, briefly duplicating thrower velocity.
+
+-Extracts Mechanic-
+Activated with the Investigation plan, extracts are dropped by enemies on their respective biomes and are used to craft materials or loot that aren't unlimited otherwise. If turned off, enemies and critters will drop extra copper coins instead.
+
+-Vanilla Changes-
+Throwing weapon's projectiles weaken the more they last. Tweaks to phaseblades, phasesabers and katana.
+Rod of discord and rod of dirt now use mana again. Enemy spawn rate increased by 0.005% on expert mode and hard mode.
+Summoning weapons are used faster the more summoning speed the player has.
+Throwing weapons are used faster the more throwing velocity the player has.
+Limited damage reduction to 99.99999%. Jump speed and running acceleration are slightly increased by movement speed.
+After breaking 25 background piles, you can get one of the five Terragrim-weapons.
+A lot of quiality of life recipies, like throwing knifes, rod of discord, demon altar recipies, etc.
+All vanilla projectiles have localNPChitCooldown, and with that, the beenade and stardust dragon have been nerfed.
+(Remember that the mod isn´t finished, everthing is subject to change)
+
+Special thanks to my Dev team (in Discord):
 - Septimus (Spriter & Musician)
 - Woodio (Coder)
+- SpruceCat (Coder & Musician)
+- Made in Hevinis (Designer)
 
 And my discord supporters:
-- Freygarr
-- Jax
 - Ammy (Friend irl)
-- Lettuce (Retired dev)
+- Mr_Allende (Friend irl)
+- Mr_fishy (Friend irl)
+- Freygarr
+- CallieBrimStone
 
-- You can learn more, recieve news from this mod and check out changelogs on my Discord server, link in the forum page below! - Más información, noticias y registro de cambios en mi server de Discord, link en la pagína aquí! -
+- You can learn more, recieve news from this mod, ask questions and check out changelogs on my Discord server, link in the forum page below! - Más información, noticias, preguntas y el registro de cambios en mi server de Discord, link en la pagína aquí! -

@@ -20,7 +20,7 @@ namespace MartainsOrder.Whips
         public int buffGivenToPlayer;
         public int buffTime;
 		private float IncrementationBonus = 0f;
-		private int pinnacleCount = 0;
+		//private int pinnacleCount = 0;
 
         private Rectangle handPos = new Rectangle(0, 0, 0, 0);
 
@@ -90,25 +90,42 @@ namespace MartainsOrder.Whips
                     target.AddBuff(72, 120);
                 }
             }
+			if(Main.player[projectile.owner].magmaStone)target.AddBuff(24, Main.rand.Next(60, 361));
+			if(Main.player[projectile.owner].GetModPlayer<MyPlayer>().everfrostStone)target.AddBuff(44, Main.rand.Next(55, 351));
 			
 			if (projectile.type == mod.ProjectileType("FlowerWhipWhip") && Main.rand.Next(2) == 0)
             {
 				projectile.damage = (int)((float)projectile.damage * 0.45);
 			}
-			if (projectile.type == mod.ProjectileType("MWhipWhip"))
-            {
-				projectile.damage = (int)((float)projectile.damage * 0.55);
-			}
 			if (projectile.type == mod.ProjectileType("YellowPhaseWhip") || projectile.type == mod.ProjectileType("PurplePhaseWhip") ||
 			projectile.type == mod.ProjectileType("BluePhaseWhip") || projectile.type == mod.ProjectileType("GreenPhaseWhip") ||
 			projectile.type == mod.ProjectileType("RedPhaseWhip") || projectile.type == mod.ProjectileType("WhitePhaseWhip") ||
-			projectile.type == mod.ProjectileType("OrangePhaseWhip") || projectile.type == mod.ProjectileType("BlackPhaseWhip"))
+			projectile.type == mod.ProjectileType("OrangePhaseWhip") || projectile.type == mod.ProjectileType("BlackPhaseWhip") ||
+			projectile.type == mod.ProjectileType("LimePhaseWhip") || projectile.type == mod.ProjectileType("BrownPhaseWhip") ||
+			projectile.type == mod.ProjectileType("GrayPhaseWhip") || projectile.type == mod.ProjectileType("TealPhaseWhip") )
             {
 				target.AddBuff(mod.BuffType("PhaseGlow"), 600);
 				projectile.damage = (int)((float)projectile.damage * 0.62);
 			}
+			if (projectile.type == mod.ProjectileType("StarFlailWhip") && Main.rand.Next(2) == 0)
+            {
+				projectile.damage = (int)((float)projectile.damage * 0.53);
+			}
+			if (projectile.type == mod.ProjectileType("MWhipWhip"))
+            {
+				if(player.ownedProjectileCounts[mod.ProjectileType("MWSummon")] == 0)
+				{
+					Projectile.NewProjectile(target.Center.X, target.Center.Y, projectile.velocity.X/2, projectile.velocity.Y/2, mod.ProjectileType("MWSummon"), projectile.damage/2, projectile.knockBack/2, projectile.owner, 0f, 0f);
+				}
+				
+				projectile.damage = (int)((float)projectile.damage * 0.63);
+			}
 			if (projectile.type == mod.ProjectileType("TulipWhipWhip"))
             {
+				Projectile.NewProjectile(target.Center.X, target.Center.Y, projectile.velocity.X+Main.rand.NextFloat(-1f,1f), projectile.velocity.Y+Main.rand.NextFloat(-1f,1f), mod.ProjectileType("Pix"), projectile.damage/2, projectile.knockBack/2, projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(target.Center.X, target.Center.Y, -projectile.velocity.X+Main.rand.NextFloat(-1f,1f), -projectile.velocity.Y+Main.rand.NextFloat(-1f,1f), mod.ProjectileType("Pix"), projectile.damage/2, projectile.knockBack/2, projectile.owner, 0f, 0f);
+				if(Main.rand.Next(3)==0)Projectile.NewProjectile(target.Center.X, target.Center.Y, projectile.velocity.X/2+Main.rand.NextFloat(-1f,1f), projectile.velocity.Y/2+Main.rand.NextFloat(-1f,1f), mod.ProjectileType("Pix"), projectile.damage/2, projectile.knockBack/2, projectile.owner, 0f, 0f);
+				
 				projectile.damage = (int)((float)projectile.damage * 0.68);
 			}
 			if (projectile.type == mod.ProjectileType("GarnetWhipWhip"))
@@ -120,6 +137,13 @@ namespace MartainsOrder.Whips
             {
 				target.AddBuff(mod.BuffType("StarConstelation"), 240);
 				projectile.damage = (int)((float)projectile.damage * 0.89);
+			}
+			if (projectile.type == mod.ProjectileType("ShadeToungeWhip"))
+            {
+				target.AddBuff(mod.BuffType("Empty"), 240);
+				Main.player[projectile.owner].statLife += (int)(projectile.damage*0.05f);
+				Main.player[projectile.owner].HealEffect((int)(projectile.damage*0.05f));
+				projectile.damage = (int)((float)projectile.damage * 0.86);
 			}
 			if (projectile.type == mod.ProjectileType("EoWWhipWhip"))
             {
@@ -147,7 +171,7 @@ namespace MartainsOrder.Whips
 				Main.player[projectile.owner].AddBuff(mod.BuffType("Pinnacle"), 300);
 				target.AddBuff(mod.BuffType("GarnetCurse"), 180);
 				target.AddBuff(BuffID.ShadowFlame, 180);
-				target.AddBuff(mod.BuffType("PhaseGlow"), 180);
+				target.AddBuff(mod.BuffType("PhaseGlow"), 600);
             }
 
             player.MinionAttackTargetNPC = target.whoAmI;
@@ -166,6 +190,12 @@ namespace MartainsOrder.Whips
 
         public override void AI()
         {
+			/*if(projectile.type == mod.ProjectileType("PinnacleExtraWhip")) {Main.projFrames[projectile.type] = 12;
+			if (++projectile.frameCounter >= 0 && projectile.frameCounter <= 1)
+            {
+                projectile.frame = Main.rand.Next(0, 12);
+            }
+			}*/
             //if (Main.player[projectile.owner].GetModPlayer<MyPlayer>().garnetWhipRange == true) rangeMult = (rangeMult * 1.10f);
             //if (Main.player[projectile.owner].GetModPlayer<MyPlayer>().accWhipRange == true) rangeMult = (rangeMult * 1.10f);
 			rangeMult=((rangeMult*Main.player[projectile.owner].GetModPlayer<MyPlayer>().whipExtraRange));
@@ -205,90 +235,114 @@ namespace MartainsOrder.Whips
             }
 			float dustVelX = (projectile.velocity.X * 1.1f)+Main.rand.NextFloat(0.5f,1.5f);
 			float dustVelY = (projectile.velocity.Y * 1.1f)+Main.rand.NextFloat(0.5f,1.5f);
-
-            if (projectile.type == mod.ProjectileType("FlowerWhipWhip") && Main.rand.Next(3) == 0)
+			
+			//if(player.ownedProjectileCounts[mod.ProjectileType("ZenithWhip")] >= 1 && projectile.type == mod.ProjectileType("ZenithWhip")) {
+            if (projectile.type == mod.ProjectileType("FlowerWhipWhip") && projectile.ai[0] > (float)(int)(timeToFlyOut / 2.2f) && projectile.ai[0] < (float)(int)(timeToFlyOut / 1.25f))
             {
                 _whipPointsForCollision.Clear();
                 FillWhipControlPoints(projectile, _whipPointsForCollision);
                 Rectangle r2 = Utils.CenteredRectangle(_whipPointsForCollision[_whipPointsForCollision.Count - 1], new Vector2(30f, 30f));
                 int num3 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 2, dustVelX * 1f, dustVelY * 1f, 100, default(Color), 0.5f);
                 Main.dust[num3].noGravity = true;
-                Main.dust[num3].scale = 1.25f;
+                Main.dust[num3].scale = Main.rand.NextFloat(1.15f,1.35f);
             }
-            if (projectile.type == mod.ProjectileType("MWhipWhip") && Main.rand.Next(2) == 0)
+			if (projectile.type == mod.ProjectileType("StarFlailWhip") && projectile.ai[0] > (float)(int)(timeToFlyOut / 2.2f) && projectile.ai[0] < (float)(int)(timeToFlyOut / 1.25f))
+            {
+                _whipPointsForCollision.Clear();
+                FillWhipControlPoints(projectile, _whipPointsForCollision);
+                Rectangle r2 = Utils.CenteredRectangle(_whipPointsForCollision[_whipPointsForCollision.Count - 1], new Vector2(30f, 30f));
+                int num3 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 66, dustVelX * 1f, dustVelY * 1f, 100, Color.Teal, 0.5f);
+                Main.dust[num3].noGravity = true;
+                Main.dust[num3].scale = Main.rand.NextFloat(0.9f,1.1f);
+            }
+            if (projectile.type == mod.ProjectileType("MWhipWhip") && projectile.ai[0] > (float)(int)(timeToFlyOut / 2.2f) && projectile.ai[0] < (float)(int)(timeToFlyOut / 1.25f))
             {
                 _whipPointsForCollision.Clear();
                 FillWhipControlPoints(projectile, _whipPointsForCollision);
                 Rectangle r2 = Utils.CenteredRectangle(_whipPointsForCollision[_whipPointsForCollision.Count - 1], new Vector2(30f, 30f));
                 int num3 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 57, dustVelX * 1f, dustVelY * 1f, 100, default(Color), 1f);
                 Main.dust[num3].noGravity = true;
-                Main.dust[num3].scale = 1.5f;
+                Main.dust[num3].scale = Main.rand.NextFloat(1.4f,1.6f);
             }
-			if (projectile.type == mod.ProjectileType("TulipWhipWhip"))
+			if (projectile.type == mod.ProjectileType("TulipWhipWhip") && projectile.ai[0] > (float)(int)(timeToFlyOut / 2.2f) && projectile.ai[0] < (float)(int)(timeToFlyOut / 1.25f))
             {
                 _whipPointsForCollision.Clear();
                 FillWhipControlPoints(projectile, _whipPointsForCollision);
                 Rectangle r2 = Utils.CenteredRectangle(_whipPointsForCollision[_whipPointsForCollision.Count - 1], new Vector2(30f, 30f));
-                int num3 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 57, Main.rand.NextFloat(-2.5f, 2.5f), Main.rand.NextFloat(-2.5f, 2.5f), 150, default(Color), 0.8f);
+                int num3 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 57, Main.rand.NextFloat(-2.5f, 2.5f), Main.rand.NextFloat(-2.5f, 2.5f), 0, default(Color), 0.8f);
                 Main.dust[num3].noGravity = true;
-                Main.dust[num3].scale = 1.1f;
+                Main.dust[num3].scale = Main.rand.NextFloat(1.0f,1.2f);
                 if (Main.rand.Next(3) == 0)
                 {
                     num3 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 47, dustVelX * 1f, dustVelY * 1f, 100, default(Color), 0.75f);
                     Main.dust[num3].noGravity = true;
-                    Main.dust[num3].scale = 1.2f;
+                    Main.dust[num3].scale = Main.rand.NextFloat(1.1f,1.3f);
                 }
 
             }
-            if (projectile.type == mod.ProjectileType("GarnetWhipWhip"))
+            if (projectile.type == mod.ProjectileType("GarnetWhipWhip") && projectile.ai[0] > (float)(int)(timeToFlyOut / 2.2f) && projectile.ai[0] < (float)(int)(timeToFlyOut / 1.25f))
             {
                 _whipPointsForCollision.Clear();
                 FillWhipControlPoints(projectile, _whipPointsForCollision);
                 Rectangle r2 = Utils.CenteredRectangle(_whipPointsForCollision[_whipPointsForCollision.Count - 1], new Vector2(30f, 30f));
-                int num3 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 60, dustVelX * 1.1f, dustVelY * 1.1f, 100, default(Color), 1.15f);
+                int num3 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 60, dustVelX * 1.1f, dustVelY * 1.1f, 50, default(Color), 1.15f);
                 Main.dust[num3].noGravity = true;
-                Main.dust[num3].scale = 1.5f;
+                Main.dust[num3].scale = Main.rand.NextFloat(1.4f,1.6f);
             }
-			if (projectile.type == mod.ProjectileType("StardustWhip") && Main.rand.Next(2) == 0)
+			if (projectile.type == mod.ProjectileType("StardustWhip") && projectile.ai[0] > (float)(int)(timeToFlyOut / 2.2f) && projectile.ai[0] < (float)(int)(timeToFlyOut / 1.25f))
             {
                 _whipPointsForCollision.Clear();
                 FillWhipControlPoints(projectile, _whipPointsForCollision);
                 Rectangle r2 = Utils.CenteredRectangle(_whipPointsForCollision[_whipPointsForCollision.Count - 1], new Vector2(30f, 30f));
-                int num3 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 135, dustVelX * 1.1f, dustVelY * 1.1f, 100, default(Color), 1.15f);
+                int num3 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 135, dustVelX * 1.2f, dustVelY * 1.2f, 100, default(Color), 1.15f);
                 Main.dust[num3].noGravity = true;
-                Main.dust[num3].scale = 2f;
+                Main.dust[num3].scale = Main.rand.NextFloat(1.9f,2.1f);
             }
-            if (projectile.type == mod.ProjectileType("EoWWhipWhip"))
+			if (projectile.type == mod.ProjectileType("ShadeToungeWhip") && projectile.ai[0] > (float)(int)(timeToFlyOut / 2.2f) && projectile.ai[0] < (float)(int)(timeToFlyOut / 1.25f))
             {
                 _whipPointsForCollision.Clear();
                 FillWhipControlPoints(projectile, _whipPointsForCollision);
                 Rectangle r2 = Utils.CenteredRectangle(_whipPointsForCollision[_whipPointsForCollision.Count - 1], new Vector2(30f, 30f));
-                int num3 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 75, dustVelX * 1.1f, dustVelY * 1.1f, 100, default(Color), 1.35f);
+                int num3 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 109, dustVelX * 1.1f, dustVelY * 1.1f, 100, default(Color), 1.15f);
                 Main.dust[num3].noGravity = true;
-                Main.dust[num3].scale = 1.5f;
+                Main.dust[num3].scale = Main.rand.NextFloat(1.8f,2.2f);
             }
-            if (projectile.type == mod.ProjectileType("SalvageHoneyWhipWhip"))
+            if (projectile.type == mod.ProjectileType("EoWWhipWhip") && projectile.ai[0] > (float)(int)(timeToFlyOut / 2.2f) && projectile.ai[0] < (float)(int)(timeToFlyOut / 1.25f))
             {
                 _whipPointsForCollision.Clear();
                 FillWhipControlPoints(projectile, _whipPointsForCollision);
                 Rectangle r2 = Utils.CenteredRectangle(_whipPointsForCollision[_whipPointsForCollision.Count - 1], new Vector2(30f, 30f));
-                int num3 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 153, dustVelX * 1f, dustVelY * 1f, 100, default(Color), 1.05f);
+                int num3 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 75, dustVelX * 1.1f, dustVelY * 1.1f, 75, default(Color), 1.35f);
                 Main.dust[num3].noGravity = true;
-                Main.dust[num3].scale = 1.5f;
+                Main.dust[num3].scale = Main.rand.NextFloat(1.4f,1.6f);
             }
-			if (projectile.type == mod.ProjectileType("ZenithWhip"))
+            if (projectile.type == mod.ProjectileType("SalvageHoneyWhipWhip") && projectile.ai[0] > (float)(int)(timeToFlyOut / 2.2f) && projectile.ai[0] < (float)(int)(timeToFlyOut / 1.25f))
             {
-				pinnacleCount++;
+                _whipPointsForCollision.Clear();
+                FillWhipControlPoints(projectile, _whipPointsForCollision);
+                Rectangle r2 = Utils.CenteredRectangle(_whipPointsForCollision[_whipPointsForCollision.Count - 1], new Vector2(30f, 30f));
+                int num3 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 153, dustVelX * 1f, dustVelY * 1f, 75, default(Color), 1.05f);
+                Main.dust[num3].noGravity = true;
+                Main.dust[num3].scale = Main.rand.NextFloat(1.4f,1.6f);
+            }
+			if (projectile.type == mod.ProjectileType("ZenithWhip") && projectile.ai[0] > (float)(int)(timeToFlyOut / 2.2f) && projectile.ai[0] < (float)(int)(timeToFlyOut / 1.25f))
+            {
+				/*pinnacleCount++;
 				if(pinnacleCount >= 10 && projectile.ai[0] > (float)(int)(timeToFlyOut / 2.2f) && projectile.ai[0] < (float)(int)(timeToFlyOut / 1.25f)) {
 					_whipPointsForCollision.Clear();
                 FillWhipControlPoints(projectile, _whipPointsForCollision);
                 Rectangle r2 = Utils.CenteredRectangle(_whipPointsForCollision[_whipPointsForCollision.Count - 1], new Vector2(30f, 30f));
 				Projectile.NewProjectile(r2.TopLeft().X, r2.TopLeft().Y, projectile.velocity.X, projectile.velocity.Y, mod.ProjectileType("PinnacleExtra"), projectile.damage/2, projectile.knockBack, projectile.owner, 0f, 0f);
-				}
-				
+				}*/
+				_whipPointsForCollision.Clear();
+                FillWhipControlPoints(projectile, _whipPointsForCollision);
+                Rectangle r3 = Utils.CenteredRectangle(_whipPointsForCollision[_whipPointsForCollision.Count - 1], new Vector2(30f, 30f));
+                int num3 = Dust.NewDust(r3.TopLeft(), r3.Width, r3.Height, 66, dustVelX * 1f, dustVelY * 1f, 75, Main.DiscoColor, 1.05f);
+                Main.dust[num3].noGravity = true;
+                Main.dust[num3].scale = Main.rand.NextFloat(0.8f,0.9f);
 			}
 
-            if (Main.player[projectile.owner].meleeEnchant > 0)
+            if (Main.player[projectile.owner].meleeEnchant > 0 && projectile.ai[0] > (float)(int)(timeToFlyOut / 2.2f) && projectile.ai[0] < (float)(int)(timeToFlyOut / 1.25f))
             {
                 byte meleeEnchant = Main.player[projectile.owner].meleeEnchant;
                 if (meleeEnchant == 1)
@@ -385,6 +439,29 @@ namespace MartainsOrder.Whips
                     Main.dust[num298].velocity *= 0.25f;
                 }
             }
+			if (Main.player[projectile.owner].magmaStone && projectile.ai[0] > (float)(int)(timeToFlyOut / 2.2f) && projectile.ai[0] < (float)(int)(timeToFlyOut / 1.25f))
+            {
+                _whipPointsForCollision.Clear();
+                FillWhipControlPoints(projectile, _whipPointsForCollision);
+                Rectangle r2 = Utils.CenteredRectangle(_whipPointsForCollision[_whipPointsForCollision.Count - 1], new Vector2(30f, 30f));
+                int num291 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 6, dustVelX * 1f, dustVelY * 1f, 100, default(Color), 1.05f);
+                Main.dust[num291].noGravity = true;
+				Main.dust[num291].scale = 1.5f;
+                Main.dust[num291].velocity *= 1f;
+                Main.dust[num291].velocity.Y -= 0.2f;
+            }
+			if (Main.player[projectile.owner].GetModPlayer<MyPlayer>().everfrostStone && projectile.ai[0] > (float)(int)(timeToFlyOut / 2.2f) && projectile.ai[0] < (float)(int)(timeToFlyOut / 1.25f))
+            {
+                _whipPointsForCollision.Clear();
+                FillWhipControlPoints(projectile, _whipPointsForCollision);
+                Rectangle r2 = Utils.CenteredRectangle(_whipPointsForCollision[_whipPointsForCollision.Count - 1], new Vector2(30f, 30f));
+                int num291 = Dust.NewDust(r2.TopLeft(), r2.Width, r2.Height, 135, dustVelX * 1f, dustVelY * 1f, 100, default(Color), 1.05f);
+                Main.dust[num291].noGravity = true;
+				Main.dust[num291].scale = 1.5f;
+                Main.dust[num291].velocity *= 1f;
+                Main.dust[num291].velocity.Y -= 0.2f;
+            }
+			//}
         }
         public void FillWhipControlPoints(Projectile proj, List<Vector2> controlPoints)
         {

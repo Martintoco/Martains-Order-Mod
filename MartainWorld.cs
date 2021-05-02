@@ -1,10 +1,13 @@
 using MartainsOrder.Tiles;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.IO;
-using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.World.Generation;
@@ -14,6 +17,9 @@ namespace MartainsOrder
 {
     public class MartainWorld : ModWorld
     {
+		public static bool downedBritzz;
+		public static bool downedAlchemist;
+		public static bool downedVoidDigger;
         public static bool downedPrinceSlime;
         public static bool downedTriplets;
         public static bool downedCrimsonPillar;
@@ -21,21 +27,43 @@ namespace MartainsOrder
         public static bool downedJungleDefenders;
 
         public static bool downedGarnetFlowerCluster;
+		public static bool downedVoidElemental;
 
         public static int ModTiles;
         //public static int astralTiles;
         public static int voidTiles;
+		public static int woodsTiles;
+		public static bool forestSpirits;
 		
-		public static bool martiniteBless = false;
-
+		public static bool martiniteBless;
+		public static bool timeStop;
+		public static bool timeRush;
+		public static bool extractsActive;
+		
+		public static bool zincGen;
+		public static bool tantalumGen;
+		
+		public static int brokenPiles;
+		
+		///////////////////RARITIES///////////////////
+		public static bool colorChangeM = false;
+		public static int colorChangeMCD = 0;
+		public static int nuclearCCD = 0;
+		public static int voidCCD = 0;
+		//////////////////////////////////////////////
+		
         public override void Initialize()
         {
-            downedPrinceSlime = false;
-            downedTriplets = false;
-            downedCrimsonPillar = false;
-            downedCorruptionPillar = false;
-            downedJungleDefenders = false;
+            //downedPrinceSlime = false;
+            //downedTriplets = false;
+            //downedCrimsonPillar = false;
+            //downedCorruptionPillar = false;
+            //downedJungleDefenders = false;
 			//martiniteBless = false;
+			//extractsActive = true;
+			colorChangeMCD = 0;
+			nuclearCCD = 0;
+			voidCCD = 0;
         }
 
         public override TagCompound Save()
@@ -133,7 +161,8 @@ namespace MartainsOrder
         {
             //astralTiles = tileCounts[mod.TileType("AstralGrass")];
             //astralTiles = tileCounts[mod.TileType("AstralMeteorite")];
-            voidTiles = tileCounts[mod.TileType("VoidGrass")] + tileCounts[mod.TileType("VoidSand")] + tileCounts[mod.TileType("VoidStone")];
+            voidTiles = tileCounts[mod.TileType("VoidGrass")] + tileCounts[mod.TileType("VoidSand")] + tileCounts[mod.TileType("VoidIce")] + tileCounts[mod.TileType("VoidStone")];
+			woodsTiles = tileCounts[TileID.Trees] + tileCounts[TileID.LivingWood] + tileCounts[TileID.LeafBlock];
         }
 
         // We use this hook to add 3 steps to world generation at various points. 
@@ -193,7 +222,7 @@ namespace MartainsOrder
 
             // Ores are quite simple, we simply use a for loop and the WorldGen.TileRunner to place splotches of the specified Tile in the world.
             // "6E-05" is "scientific notation". It simply means 0.00006 but in some ways is easier to read.
-            for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+            /*for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
             {
                 // The inside of this for loop corresponds to one single splotch of our Ore.
                 // First, we randomly choose any coordinate in the world by choosing a random x and y value.
@@ -201,19 +230,25 @@ namespace MartainsOrder
                 int y = WorldGen.genRand.Next((int)WorldGen.rockLayerLow, Main.maxTilesY + 100); // WorldGen.worldSurfaceLow is actually the highest surface tile. In practice you might want to use WorldGen.rockLayer or other WorldGen values.
 
                 // Then, we call WorldGen.TileRunner with random "strength" and random "steps", as well as the Tile we wish to place. Feel free to experiment with strength and step to see the shape they generate.
-                WorldGen.TileRunner(x, y, WorldGen.genRand.Next(7, 12), WorldGen.genRand.Next(9, 16), TileType<ZincOre>());
+                WorldGen.TileRunner(x, y, WorldGen.genRand.Next(10, 21), WorldGen.genRand.Next(6, 12), TileType<ZincOre>());
                 // Alternately, we could check the tile already present in the coordinate we are interested. Wrapping WorldGen.TileRunner in the following condition would make the ore only generate in Snow.
                 // Tile tile = Framing.GetTileSafely(x, y);
                 // if (tile.active() && tile.type == TileID.SnowBlock)
                 // {
                 // 	WorldGen.TileRunner(.....);
                 // }
-            }
-            for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+            }*/
+            /*for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
             {
                 int x = WorldGen.genRand.Next(0, Main.maxTilesX);
                 int y = WorldGen.genRand.Next((int)WorldGen.rockLayerLow, Main.maxTilesY);
                 WorldGen.TileRunner(x, y, WorldGen.genRand.Next(6, 12), WorldGen.genRand.Next(9, 16), TileType<TantalumOre>());
+            }*/
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+            {
+                int x = WorldGen.genRand.Next(0, Main.maxTilesX);
+                int y = WorldGen.genRand.Next((int)WorldGen.rockLayerLow, Main.maxTilesY);
+                WorldGen.TileRunner(x, y, WorldGen.genRand.Next(2, 6), WorldGen.genRand.Next(1, 5), mod.TileType("FishyumOre"));
             }
 
             for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
@@ -256,10 +291,46 @@ namespace MartainsOrder
         {
             progress.Message = "Adding Martain's Stone Variants...";
 
+            
+
             for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
             {
                 int x = WorldGen.genRand.Next(0, Main.maxTilesX);
-                int y = WorldGen.genRand.Next((int)WorldGen.rockLayerLow, Main.maxTilesY);
+                int y = WorldGen.genRand.Next((int)WorldGen.rockLayerHigh, Main.maxTilesY - 600);
+                WorldGen.TileRunner(x, y, WorldGen.genRand.Next(8, 30), WorldGen.genRand.Next(26, 66), mod.TileType("ClayStone"), false, 0f, 0f, false, true);
+            }
+			
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+            {
+                int x = WorldGen.genRand.Next(0, Main.maxTilesX);
+                int y = WorldGen.genRand.Next((int)WorldGen.rockLayerLow + 350, Main.maxTilesY - 100);
+                WorldGen.TileRunner(x, y, WorldGen.genRand.Next(8, 20), WorldGen.genRand.Next(6, 14), mod.TileType("MagmaRock"), false, 0f, 0f, false, true);
+            }
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+            {
+				int x;
+				switch (WorldGen.genRand.Next(0, 2))
+				{
+				case 0:
+				x = WorldGen.genRand.Next(0, 300);
+					break;
+				default:
+				x = WorldGen.genRand.Next(Main.maxTilesX - 350, Main.maxTilesX);
+					break;
+				}
+                int y = WorldGen.genRand.Next((int)WorldGen.worldSurfaceLow, (int)WorldGen.rockLayerLow + 200);
+                WorldGen.TileRunner(x, y, WorldGen.genRand.Next(8, 19), WorldGen.genRand.Next(6, 14), mod.TileType("AquaRock"), false, 0f, 0f, false, true);
+            }
+        }
+		
+        private void MartainsStones2(GenerationProgress progress2)
+        {
+            progress2.Message = "Adding more Martain's Stone Variants...";
+			
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+            {
+                int i = WorldGen.genRand.Next(0, Main.maxTilesX);
+                int j = WorldGen.genRand.Next((int)WorldGen.rockLayerLow + 350, Main.maxTilesY - 100);
 
                 //Tile tile = Framing.GetTileSafely(
                 //WorldGen.genRand.Next(0, Main.maxTilesX), 
@@ -267,23 +338,25 @@ namespace MartainsOrder
                 //);
                 //if (tile.active() && tile.type == TileID.Stone)
                 //{
-                WorldGen.TileRunner(x, y, WorldGen.genRand.Next(70, 115), WorldGen.genRand.Next(41, 91), mod.TileType("HardStone"), false, 0f, 0f, false, true);
-                //}
-
+				Tile tile = QuickFraming(i, j);
+                if (tile.active() && (tile.type == TileID.Stone || tile.type == TileID.Dirt))
+                {
+                WorldGen.TileRunner(i, j, WorldGen.genRand.Next(60, 100), WorldGen.genRand.Next(31, 86), mod.TileType("HardStone"), false, 0f, 0f, false, true);
+                }
+				//}
             }
-
-            for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
             {
-                int x = WorldGen.genRand.Next(0, Main.maxTilesX);
-                int y = WorldGen.genRand.Next((int)WorldGen.rockLayerHigh, Main.maxTilesY - 300);
-                WorldGen.TileRunner(x, y, WorldGen.genRand.Next(8, 30), WorldGen.genRand.Next(26, 66), mod.TileType("ClayStone"), false, 0f, 0f, false, true);
+                int i = WorldGen.genRand.Next(0, Main.maxTilesX);
+                int j = WorldGen.genRand.Next((int)WorldGen.rockLayerLow + 700, Main.maxTilesY - 75);
+				
+				Tile tile = QuickFraming(i, j);
+                if (tile.active() && (tile.type == TileID.Stone || tile.type == TileID.Dirt))
+                {
+					WorldGen.TileRunner(i, j, WorldGen.genRand.Next(60, 100), WorldGen.genRand.Next(31, 86), mod.TileType("HardStone"), false, 0f, 0f, false, true);
+                }
             }
-        }
-		
-        private void MartainsStones2(GenerationProgress progress2)
-        {
-            progress2.Message = "Adding more Martain's Stone Variants...";
-
+			
             for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
             {
                 int i = WorldGen.genRand.Next(0, Main.maxTilesX);
@@ -313,6 +386,21 @@ namespace MartainsOrder
                 }
 
             }
+			
+			
+			
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+            {
+                int i = WorldGen.genRand.Next(0, Main.maxTilesX);
+                int j = WorldGen.genRand.Next((int)WorldGen.worldSurfaceLow, (int)WorldGen.rockLayerHigh);
+
+                Tile tile = QuickFraming(i, j);
+                if (tile.active() && tile.type == TileID.Mud)
+                {
+                    WorldGen.TileRunner(i, j, WorldGen.genRand.Next(5, 21), WorldGen.genRand.Next(5, 22), mod.TileType("Mire"), false, 0f, 0f, false, true);
+                }
+
+            }
         }
 		
 		private void MartainsGems(GenerationProgress progress3)
@@ -322,8 +410,22 @@ namespace MartainsOrder
 			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
             {
                 int i = WorldGen.genRand.Next(0, Main.maxTilesX);
-                int j = WorldGen.genRand.Next((int)Main.maxTilesY - 4, Main.maxTilesY);
-                WorldGen.TileRunner(i, j, 100, 100, mod.TileType("CoreBlock"), false, 0f, 0f, false, true);
+                int j = WorldGen.genRand.Next((int)Main.maxTilesY-10, Main.maxTilesY);
+				Tile tile = QuickFraming(i, j);
+                if (tile.active() && tile.type == TileID.Ash)
+                {
+				WorldGen.TileRunner(i, j, 75, 95, mod.TileType("CoreBlock"), false, 0f, 0f, false, true);
+				}
+            }
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+            {
+                int i = WorldGen.genRand.Next(0, Main.maxTilesX);
+                int j = WorldGen.genRand.Next((int)Main.maxTilesY-10, Main.maxTilesY);
+				Tile tile = QuickFraming(i, j);
+                if (!tile.active())
+                {
+				WorldGen.TileRunner(i, j, 45, 75, mod.TileType("CoreBlock"), false, 0f, 0f, false, true);
+				}
             }
         }
 		
@@ -331,5 +433,74 @@ namespace MartainsOrder
         {
             return Framing.GetTileSafely(i, j);
         }
+		
+		public override void PostWorldGen() {
+			int[] itemsToPlaceInIceChests1 = { mod.ItemType("ClothBandana"), ItemID.SilverCoin, ItemID.GoldCoin, 0, mod.ItemType("ComfyBoots") };
+			int itemsToPlaceInIceChestsChoice1 = 0;
+			for (int chestIndex = 0; chestIndex < 1000; chestIndex++) {
+				Chest chest = Main.chest[chestIndex]; 
+				if (chest != null && Main.tile[chest.x, chest.y].type == TileID.Containers && Main.tile[chest.x, chest.y].frameX == 1 * 36) {
+					for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++) {
+						if (chest.item[inventoryIndex].type == ItemID.None) {
+							chest.item[inventoryIndex].SetDefaults(itemsToPlaceInIceChests1[itemsToPlaceInIceChestsChoice1]);
+							itemsToPlaceInIceChestsChoice1 = (itemsToPlaceInIceChestsChoice1 + 1) % itemsToPlaceInIceChests1.Length;
+							//chest.item[inventoryIndex].SetDefaults(Main.rand.Next(itemsToPlaceInIceChests1));
+							break;
+						}
+					}
+				}
+			}
+			
+			int[] itemsToPlaceInIceChests2 = { 0, 0, 0, mod.ItemType("PalladiumShield") };
+			int itemsToPlaceInIceChestsChoice2 = 0;
+			for (int chestIndex = 0; chestIndex < 1000; chestIndex++) {
+				Chest chest = Main.chest[chestIndex]; 
+				if (chest != null && Main.tile[chest.x, chest.y].type == TileID.Containers && Main.tile[chest.x, chest.y].frameX == 2 * 36) {
+					for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++) {
+						if (chest.item[inventoryIndex].type == ItemID.None) {
+							chest.item[inventoryIndex].SetDefaults(itemsToPlaceInIceChests2[itemsToPlaceInIceChestsChoice2]);
+							itemsToPlaceInIceChestsChoice2 = (itemsToPlaceInIceChestsChoice2 + 1) % itemsToPlaceInIceChests2.Length;
+							break;
+						}
+					}
+				}
+			}
+			
+			int[] itemsToPlaceInIceChests3 = { mod.ItemType("SweepPotion"), mod.ItemType("CasterPotion"), mod.ItemType("ShooterPotion"), mod.ItemType("WhipperPotion"), mod.ItemType("ThrowerPotion"), 0, 0, mod.ItemType("NaturePotion")};
+			int itemsToPlaceInIceChestsChoice3 = 0;
+			for (int chestIndex = 0; chestIndex < 1000; chestIndex++) {
+				Chest chest = Main.chest[chestIndex]; 
+				if (chest != null && Main.tile[chest.x, chest.y].type == TileID.Containers && Main.tile[chest.x, chest.y].frameX == 0 * 36) {
+					for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++) {
+						if (chest.item[inventoryIndex].type == ItemID.None) {
+							chest.item[inventoryIndex].SetDefaults(itemsToPlaceInIceChests3[itemsToPlaceInIceChestsChoice3]);
+							itemsToPlaceInIceChestsChoice3 = (itemsToPlaceInIceChestsChoice3 + 1) % itemsToPlaceInIceChests3.Length;
+							break;
+						}
+					}
+				}
+			}
+		}
+		
+		public override void PostUpdate() {
+			if(timeStop) {
+				Main.time -= 1;
+			}
+			if(timeRush) {
+				Main.time += 1;
+			}
+			if(!colorChangeM)colorChangeMCD++;
+			if(colorChangeMCD >= 60)colorChangeM = true;
+			if(colorChangeM)colorChangeMCD--;
+			if(colorChangeMCD <= 0){
+				voidCCD = 0;
+				nuclearCCD = 0;
+				colorChangeM = false;
+			}
+			if(!colorChangeM) nuclearCCD += 3;
+			if(colorChangeM) nuclearCCD -= 3;
+			if(!colorChangeM) voidCCD += 3;
+			if(colorChangeM) voidCCD -= 3;
+		}
     }
 }
