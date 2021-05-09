@@ -1,4 +1,4 @@
 # Martains-Order-Mod
-Some random notes: This mod aims to add a bit of everything, other bigger mods were a great inspiration for me to start developing with the little I know of coding and drawing. I have a thread posted about my mod; https://forums.terraria.org/index.php?threads/martains-order-mod.99634/ 
-There is also my discord server invitation there, so we can chat about some improvments or ideas about the mod!
-Hope ya'll like it!
+Some random notes: This mod aims to add a bit of everything, other bigger mods were a great inspiration for me to start developing with the little I knew of coding and drawing. I have a thread posted about my mod; https://forums.terraria.org/index.php?threads/last-heros-mod-martains-order.104722/
+There is also a discord server invitation on the forum. The github of this mod does not have all it's content, everthing else must be asked for by private messaging.
+Have fun with the mod!
